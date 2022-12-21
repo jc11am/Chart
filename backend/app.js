@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 const app = express()
 
 
-app.use("/api/chart", routes )
+app.use("/api/chat", routes )
 
 
 const PORT = process.env.Port
