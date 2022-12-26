@@ -1,10 +1,15 @@
 require("dotenv").config()
 const express = require("express")
 const routes = require("./routes/routes")
+const userroutes = require("./routes/userRoute")
 const mongoose = require("mongoose")
 const app = express()
 
+//middleware
+app.use(express.json())
 
+//Routes
+app.use("/api/user", userroutes )
 app.use("/api/chat", routes )
 
 
