@@ -1,19 +1,65 @@
 import { useState } from "react"
 import { VStack } from "@chakra-ui/layout"
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
+import { useToast } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, Toast } from "@chakra-ui/react"
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const LogIn = function(){
     const [ show, setShow ] = useState(false)
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+    const [ loading, setLoading ] = useState(false)
+    const toast = useToast() 
 
     const handleClick = function() {
         setShow(!show)
     }
 
-    const submitHandler = function() {
-
+    const submitHandler = async function() {
+        setLoading(true)
+        if(!email || !password){
+            toast({
+                title: "Please Fill all the Feilds",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+        });
+        setLoading(false)
+        return;
     }
+        try{
+            const config = {
+                headers: {
+                  "Content-type": "application/json",
+                },
+              }; 
+            const {data} = await axios.post("/api/user/login", {email, password}, config)
+            toast({
+                title: "Login Successful",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom", 
+            });
+            localStorage.setItem("userInfo", JSON.stringify(data))
+            setLoading(false);
+            <Navigate to="/chat"/>
+        }catch(error){
+            toast({
+                title: "Error Occured!",
+                description: error.response.data.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+              });
+              setLoading(false);
+        }
+
+       
+    };
     return(
         <VStack spacing="5px" color="black">
             <FormControl id="email" isRequired>
@@ -52,6 +98,7 @@ const LogIn = function(){
                 width="100%"
                 style={{ marginTop: 15 }}
                 onClick={submitHandler}
+                setLoading={loading}
             >
                 Login
             </Button>
