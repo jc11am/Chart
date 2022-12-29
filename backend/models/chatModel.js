@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const chats = require("../data/data")
+
 
 const chatSchema = mongoose.Schema({
     chatName:{
@@ -10,17 +10,17 @@ const chatSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    user:[{
+    users:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "ChatUser",
-    },],
-    lastestMessage:{
+        ref: "Chatuser",
+    }],
+    latestMessage:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Message"
     },
     groupAdmin: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "ChatUser"
+        ref: "Chatuser"
     },
 },
 {

@@ -33,7 +33,23 @@ const registerUser = async function(req, res){
     }
 }
 
+const allUser = async function(req, res){
+    const keyword = req.query.search
+        ? {
+            $or: [
+                {name: {$regex: req.query.search, $options: "i"}},
+                {email: {$regex: req.query.search, $options: "i"}},
+            ],
+        }
+        : {};
+        const users = await Chatuser.find(keyword).find({ _id: {
+            $ne: req.user._id
+        } });
+        res.send(users);
+}
+
 module.exports = {
     loginUser,
-    registerUser
+    registerUser,
+    allUser
 }
