@@ -9,8 +9,19 @@ import { Box,
       TabPanels,
       Tabs
      } from "@chakra-ui/react"
+import { useHistory } from "react-router-dom"
+import { useEffect } from "react"
 
 const Home = function() {
+
+  const history = useHistory()
+
+  useEffect(function(){
+    const user = JSON.parse(localStorage.getItem("userInfo"))
+    if(user){
+      history.push("/chat")
+    }
+  }, [history])
     return(
         <Container maxW="xl" centerContent>
         <Box

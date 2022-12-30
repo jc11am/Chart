@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { VStack } from "@chakra-ui/layout"
 import { useToast } from "@chakra-ui/react";
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, Toast } from "@chakra-ui/react"
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement} from "@chakra-ui/react"
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+
+
 
 const LogIn = function(){
     const [ show, setShow ] = useState(false)
@@ -11,6 +14,7 @@ const LogIn = function(){
     const [ password, setPassword ] = useState("")
     const [ loading, setLoading ] = useState(false)
     const toast = useToast() 
+    const history = useHistory();
 
     const handleClick = function() {
         setShow(!show)
@@ -45,7 +49,7 @@ const LogIn = function(){
             });
             localStorage.setItem("userInfo", JSON.stringify(data))
             setLoading(false);
-            <Navigate to="/chat"/>
+            history.push("/chat");
         }catch(error){
             toast({
                 title: "Error Occured!",
